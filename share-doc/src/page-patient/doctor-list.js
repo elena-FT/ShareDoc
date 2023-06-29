@@ -48,8 +48,7 @@ const DoctorList = () => {
           <Typography
             key={doctor.id}
             className={classes.doctorItem}
-            onClick={() => handleDoctorClick(doctor.id)}
-          >
+            onClick={() => handleDoctorClick(doctor.id)}>
             <ListItemIcon className={classes.icon}>
               <AccountCircleIcon />
             </ListItemIcon>
