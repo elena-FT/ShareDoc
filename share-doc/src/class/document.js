@@ -5,5 +5,7 @@ class Document {
       this.dateAdded = dateAdded;
       this.type = type;
       this.addedBy = addedBy;
+      this.read = [addedBy.id];
+      this.edit = [addedBy.id];
     }
   }  
