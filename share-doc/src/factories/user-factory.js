@@ -8,7 +8,7 @@ export class UserFactory {
             { id: 2, name: 'Dr. Jane Smith' },
             { id: 3, name: 'Dr. David Johnson' },
           ];
-          patient.documentsId = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+          patient.documentsId = [300, 301];
           return patient;
       }
 }

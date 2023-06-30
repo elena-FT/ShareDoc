@@ -1,11 +1,7 @@
 import './App.css';
-import ButtonNew from './components/button/button-new';
 import Header from './header';
-import DoctorList from './page-patient/doctor-list';
-import DocumentsPage from './page-patient/documents-page';
 import { makeStyles } from '@material-ui/core/styles';
 import HomePatient from './page-patient/home-patient';
-import { User } from "./class/user";
 import React, { useState, useEffect } from 'react';
 import { UserFactory } from './factories/user-factory';
 
@@ -49,14 +45,6 @@ function App() {
   };
 
   const classes = useStyles();
-  // const patient = new User('Simon', 'Bouvier', '1990-01-01', 1, 'simon.bouvier@gmail.com', '1234');
-  // patient.doctors = [
-  //     { id: 1, name: 'Dr. John Doe' },
-  //     { id: 2, name: 'Dr. Jane Smith' },
-  //     { id: 3, name: 'Dr. David Johnson' },
-  //   ]
-  // patient.documentsId = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
   const patient = UserFactory.createBasicPatient()
 
   return (

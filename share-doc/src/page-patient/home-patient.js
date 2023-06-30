@@ -13,7 +13,7 @@ function HomePatient( { patient }) {
         <ButtonNew />
         <DoctorList doctors={patient.doctors}/>
       </div>
-      <DocumentsPage patient={patient}/>
+      <DocumentsPage documents = {patient.documentsId}/>
     </div>
   );
 }
