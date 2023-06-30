@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import HomePatient from './page-patient/home-patient';
 import React, { useState, useEffect } from 'react';
 import { UserFactory } from './factories/user-factory';
+import { GRAY } from './ressources/constants'; 
 
 const useStyles = makeStyles({
   app: {
@@ -11,14 +12,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'flex-start',
     width: '100%',
-  },
-  left: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    width: '30%',
-    marginLeft: '2rem',
-    marginTop: '2rem',
+    minHeight: '100vh', // Définit la hauteur de la div en utilisant l'unité vh
+    backgroundColor: GRAY 
   },
 });
 

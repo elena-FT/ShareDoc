@@ -4,7 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FolderIcon from '@material-ui/icons/Folder';
-import { Document } from '../class/document';
+import DocumentFolders from './document-folders';
 
 const DocumentsPage = ({ documents }) => {
   const styles = {
@@ -17,15 +17,7 @@ const DocumentsPage = ({ documents }) => {
     }
   };
 
-  const folders = Array.from(new Set(documents.map((document) => document.folderName)));
-
-  const handleFolderClick = (folderName) => {
-    const folderDocuments = documents.filter((document) => document.folderName === folderName);
-    console.log('Documents du dossier', folderName);
-    folderDocuments.forEach((document) => {
-      console.log(document.name);
-    });
-  };
+  const folders = Array.from(new Set(documents.map((document) => document.type)));
 
   return (
     <div style={styles}>
@@ -33,18 +25,7 @@ const DocumentsPage = ({ documents }) => {
       <p>
         Retrouvez ici vos documents partagés.
       </p>
-      <div>
-        {folders.map((folderName) => (
-          <Card key={folderName}>
-            <CardContent>
-              <IconButton onClick={() => handleFolderClick(folderName)}>
-                <FolderIcon />
-              </IconButton>
-              <Typography variant="h6">{folderName}</Typography>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <DocumentFolders documents = { documents } folders={folders}/>
     </div>
   );
 };

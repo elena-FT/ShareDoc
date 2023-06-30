@@ -1,63 +1,112 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditIcon from '@mui/icons-material/Edit';
+import { BLUE_COLOR } from './../ressources/constants';
+import Box from '@mui/material/Box';
+import Popper from '@mui/material/Popper';
+import EditProfileDialog from './edit-profile'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
-
-export default function ProfileDialog( { patient } ) {
+export default function ProfileDialog({ patient }) {
     const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [placement, setPlacement] = React.useState();
+    const [openEdit, setOpenEdit] = React.useState(false);
+  
+    const handleClickOpen = (newPlacement) => (event) => {
+      setAnchorEl(event.currentTarget);
+      setOpen((prev) => placement !== newPlacement || !prev);
+      setPlacement(newPlacement);
     };
- 
+  
     const handleClose = () => {
-        setOpen(false);
+      setOpen(!open);
     };
 
-    return (
-        <div>
-        <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleClickOpen} >
-            <AccountCircleIcon  alt={"profil"} style={{ fontSize: 35 }}/>
-        </IconButton>
-        <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            aria-describedby="alert-dialog-slide-description"
-        >
-            <AccountCircleIcon  alt={"profil"} style={{ fontSize: 70 }}/>
-            <DialogTitle>{patient.firstName + ' ' + patient.lastName}</DialogTitle>
-            <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-                N° de sécurité social<br />
-                {patient.socialSecurityNumber}
-            </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-            <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleClose} >
-                <EditIcon  alt={"edit"} style={{ fontSize: 30 }}/>
-                Modifier le profil
+    const handleEditProfile = () => {
+        setOpen(!open);
+        setOpenEdit(!openEdit)
+    }
+
+return (
+    <div>
+        {openEdit && <EditProfileDialog />}
+        <Box sx={{ width: 50 }}>
+            <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleClickOpen('bottom-end')} >
+                <AccountCircleIcon  alt={"profil"} style={{ fontSize: 35 }}/>
             </IconButton>
-            <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleClose} >
-                <SettingsIcon  alt={"setting"} style={{ fontSize: 30 }}/>
-                Paramètre
-            </IconButton>
-            <Button onClick={handleClose}>Se déconnecter</Button>
-            </DialogActions>
-        </Dialog>
+            <Popper 
+                open={open}
+                anchorEl={anchorEl}
+                placement={placement}
+                transition
+                disablePortal 
+                keepMounted
+                onClose={handleClose}
+            >
+                {({ TransitionProps, placement }) => (
+                    <Slide
+                        {...TransitionProps}
+                        direction="left"
+                        sx={{
+                            transformOrigin: {
+                                vertical: 'top',
+                                horizontal: 'right',
+                            },
+                        }}
+                    >
+                        <div
+                            style={{
+                                marginTop: 15,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                color: 'black',
+                                background: 'white',
+                                boxShadow: '0px 0px 10px 5px rgba(0, 0, 0, 0.3)',
+                                borderRadius: '20px',
+                            }}
+                        >
+                            <AccountCircleIcon  alt={"profil"} style={{ fontSize: 70, color: BLUE_COLOR, marginTop: 20 }}/>
+                            <DialogTitle>{patient.firstName + ' ' + patient.lastName}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-slide-description">
+                                    <strong>N° de sécurité social</strong><br />
+                                    {patient.socialSecurityNumber}
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <ButtonGroup
+                                    orientation="vertical"
+                                    aria-label="vertical contained button group"
+                                    variant="text"
+                                    style={{ width: '100%' }}
+                                >
+                                    <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleEditProfile} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                                        <EditIcon  alt={"edit"} style={{ fontSize: 20, color: BLUE_COLOR }}/>
+                                        <span style={{ fontSize: 14, marginLeft: 10 }}>Modifier le profil</span>
+                                    </IconButton>
+                                    <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }} >
+                                        <SettingsIcon  alt={"setting"} style={{ fontSize: 20, color: BLUE_COLOR }}/>
+                                        <span style={{ fontSize: 14, marginLeft: 10 }}>Paramètre</span>
+                                    </IconButton>
+                                    <hr style={{ width: '100%', borderColor: BLUE_COLOR }} />
+                                    <Button onClick={handleClose}>Se déconnecter</Button>
+                                </ButtonGroup>
+                            </DialogActions>
+                        </div>
+                    </Slide>
+                    )}
+                </Popper>
+            </Box>
         </div>
     );
 }
