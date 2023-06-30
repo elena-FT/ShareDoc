@@ -1,11 +1,12 @@
 export class Document {
-    constructor(name, dateAdded, id, type, addedBy) {
+    constructor(name, path, dateAdded, id, type) {
       this.id = id;
       this.name = name;
+      this.path = path;
       this.dateAdded = dateAdded;
       this.type = type;
-      this.addedBy = addedBy;
-      this.read = [addedBy.id];
-      this.edit = [addedBy.id];
+      this.read = [];
+      this.edit = [];
+      this.folderName = path.split('/')[0];
     }
   }  

@@ -1,5 +1,5 @@
 import './App.css';
-import Header from './header';
+import Header from './header/header';
 import { makeStyles } from '@material-ui/core/styles';
 import HomePatient from './page-patient/home-patient';
 import React, { useState, useEffect } from 'react';
@@ -23,37 +23,53 @@ const useStyles = makeStyles({
 });
 
 function App() {
+  // Déclarer un état local pour stocker les données
   const [data, setData] = useState('');
+  const classes = useStyles();
+
+  // Création de notre patient
+  const patient = UserFactory.createBasicPatient()
 
   useEffect(() => {
     // Récupérer les données depuis localStorage au chargement de l'application
-    const storedData = localStorage.getItem('myData');
+    const storedData = localStorage.getItem('patient');
     if (storedData) {
       setData(storedData);
     }
   }, []);
 
   const handleSaveData = () => {
-    const newData = 'Hello, world!'; // Données à stocker
-    localStorage.setItem('myData', newData); // Enregistrer les données dans localStorage
-    setData(newData); // Mettre à jour l'état avec les nouvelles données
+    const patientData = JSON.stringify(patient); // Convertir l'objet en une chaîne JSON
+    localStorage.setItem('patient', patientData); // Enregistrer les données dans localStorage
+    setData(patientData); // Mettre à jour l'état avec les nouvelles données
   };
 
   const handleClearData = () => {
-    localStorage.removeItem('myData'); // Supprimer les données de localStorage
-    setData(''); // Réinitialiser l'état
-  };
+    // Récupérer la chaîne JSON depuis le localStorage
+    const patientData = localStorage.getItem('patient');
 
-  const classes = useStyles();
-  const patient = UserFactory.createBasicPatient()
+    if (patientData) {
+      // Convertir la chaîne JSON en objet
+      const patient = JSON.parse(patientData);
+
+      // Utiliser l'objet patient
+      console.log(patient.firstName); // Affiche "John"
+    }   else {
+      // Aucune donnée trouvée dans le localStorage
+      console.log('Aucun patient trouvé');
+    }
+
+    //localStorage.removeItem('myData'); // Supprimer les données de localStorage
+    //setData(''); // Réinitialiser l'état
+  };
 
   return (
     <div className={classes.app}>
-      <Header />
+      <Header patient={patient}/>
       <HomePatient patient={patient} />
-      <p>Données stockées : {data}</p>
+      {/* <p>Données stockées : {data}</p>
       <button onClick={handleSaveData}>Enregistrer les données</button>
-      <button onClick={handleClearData}>Effacer les données</button>
+      <button onClick={handleClearData}>Effacer les données</button> */}
     </div>
   );
 }

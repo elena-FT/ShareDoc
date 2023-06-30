@@ -1,13 +1,12 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
+import ProfileDialog from './profile.js'
 import Typography from '@material-ui/core/Typography';
-import { BLUE_COLOR } from './ressources/constants'; 
-import logo from "./assets/logo.png";
-import test from "./assets/test.png";
+import { BLUE_COLOR } from './../ressources/constants'; 
+import logo from "./../assets/logo.png";
 
-const Header = () => {
+const Header = ({ patient }) => {
   return (
     <AppBar position="static" style={{ backgroundColor: BLUE_COLOR }}>
       <Toolbar>
@@ -15,9 +14,7 @@ const Header = () => {
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           Share Doc
         </Typography>
-        <IconButton color="inherit" aria-label="user">
-            <img src={test}  alt={"profil"} style={{ width: 45}}/>
-        </IconButton>
+        <ProfileDialog patient={patient}/>
       </Toolbar>
     </AppBar>
   );

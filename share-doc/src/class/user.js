@@ -1,11 +1,11 @@
 export default class User {
-  constructor(firstName, lastName, dateOfBirth, id, mail, password, isDoctor = false) {
+  constructor(firstName, lastName, dateOfBirth, id, mail, callNumber, password, isDoctor = false) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.dateOfBirth = dateOfBirth;
     this.socialSecurityNumber = null;
-    this.documentsId = [];
+    this.documents = [];
 
     if (isDoctor) {
       this.patients = []; // Liste des patients associés au médecin
@@ -13,12 +13,13 @@ export default class User {
       this.doctors = []; // Liste des médecins associés au patient
     }
 
+    this.callNumber = callNumber;
     this.mail = mail;
     this.password = password;
   }
 
-  setDocument(documentId) {
-    this.documentsId.push(documentId);
+  setDocument(document) {
+    this.documents.push(document);
   }
 
   setDoctor(doctor) {

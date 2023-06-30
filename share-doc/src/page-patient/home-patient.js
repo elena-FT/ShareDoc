@@ -3,7 +3,7 @@ import DoctorList from './doctor-list';
 import DocumentsPage from './documents-page';
 import { makeStyles } from '@material-ui/core/styles';
 
-function HomePatient( { patient }) {
+function HomePatient({ patient }) {
   const classes = useStyles();
   console.log('patient', patient)
 
@@ -13,7 +13,7 @@ function HomePatient( { patient }) {
         <ButtonNew />
         <DoctorList doctors={patient.doctors}/>
       </div>
-      <DocumentsPage documents = {patient.documentsId}/>
+      <DocumentsPage documents = {patient.documents}/>
     </div>
   );
 }
