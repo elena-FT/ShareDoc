@@ -1,4 +1,4 @@
-class Document {
+export class Document {
     constructor(name, dateAdded, id, type, addedBy) {
       this.id = id;
       this.name = name;

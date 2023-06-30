@@ -11,9 +11,9 @@ function HomePatient( { patient }) {
     <div className={classes.home}>
       <div className={classes.left}>
         <ButtonNew />
-        <DoctorList />
+        <DoctorList doctors={patient.doctors}/>
       </div>
-      <DocumentsPage />
+      <DocumentsPage patient={patient}/>
     </div>
   );
 }

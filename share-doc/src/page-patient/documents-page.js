@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 
-const DocumentsPage = (/*{ patient }*/) => {
+const DocumentsPage = ({ patient }) => {
     const styles = {
         fontFamily: "Open Sans, sans-serif",
         fontSize: "2rem",
@@ -18,11 +18,11 @@ const DocumentsPage = (/*{ patient }*/) => {
             <p>
                 Retrouvez ici vos documents partagés.
             </p>
-            {/* <div>
-                {patient.documents.map((document) => (
+            <div>
+                {/* {patient.documents.map((document) => (
                     <Card key={document.id} document={document} />
-                ))}
-            </div> */}
+                ))} */}
+            </div>
         </div>
     );
 };

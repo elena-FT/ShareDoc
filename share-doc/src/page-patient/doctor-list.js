@@ -25,14 +25,8 @@ const useStyles = makeStyles({
   },
 });
 
-const DoctorList = () => {
+const DoctorList = ({ doctors }) => {
   const classes = useStyles();
-
-  const doctors = [
-    { id: 1, name: 'Dr. John Doe' },
-    { id: 2, name: 'Dr. Jane Smith' },
-    { id: 3, name: 'Dr. David Johnson' },
-  ];
 
   const handleDoctorClick = (doctorId) => {
     console.log('Clicked doctor:', doctorId);
