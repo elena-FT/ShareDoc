@@ -14,12 +14,14 @@ import { BLUE_COLOR } from './../ressources/constants';
 import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import EditProfileDialog from './edit-profile'
+import SettingsDialog from './settings';
 
 export default function ProfileDialog({ patient }) {
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [placement, setPlacement] = React.useState();
     const [openEdit, setOpenEdit] = React.useState(false);
+    const [openSetting, setOpenSetting] = React.useState(false);
   
     const handleClickOpen = (newPlacement) => (event) => {
       setAnchorEl(event.currentTarget);
@@ -36,9 +38,15 @@ export default function ProfileDialog({ patient }) {
         setOpenEdit(!openEdit)
     }
 
+    const handleSettings = () => {
+        setOpen(!open);
+        setOpenSetting(!openSetting)
+    }
+
 return (
     <div>
         {openEdit && <EditProfileDialog />}
+        {openSetting && <SettingsDialog />}
         <Box sx={{ width: 50 }}>
             <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleClickOpen('bottom-end')} >
                 <AccountCircleIcon  alt={"profil"} style={{ fontSize: 35 }}/>
@@ -94,7 +102,7 @@ return (
                                         <EditIcon  alt={"edit"} style={{ fontSize: 20, color: BLUE_COLOR }}/>
                                         <span style={{ fontSize: 14, marginLeft: 10 }}>Modifier le profil</span>
                                     </IconButton>
-                                    <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }} >
+                                    <IconButton color="inherit" aria-label="user" variant="outlined" onClick={handleSettings} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }} >
                                         <SettingsIcon  alt={"setting"} style={{ fontSize: 20, color: BLUE_COLOR }}/>
                                         <span style={{ fontSize: 14, marginLeft: 10 }}>Paramètre</span>
                                     </IconButton>
