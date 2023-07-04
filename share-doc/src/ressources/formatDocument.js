@@ -1,6 +1,6 @@
 const FormatDocument = {
     PDF: 'pdf',
-    WORD: 'word',
+    WORD: 'docx',
     PNG: 'png',
     JPEG: 'jpeg',
   };

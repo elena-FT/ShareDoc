@@ -16,7 +16,7 @@ import Popper from '@mui/material/Popper';
 import EditProfileDialog from './edit-profile'
 import SettingsDialog from './settings';
 
-export default function ProfileDialog({ patient }) {
+export default function ProfileDialog() {
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [placement, setPlacement] = React.useState();
@@ -42,6 +42,15 @@ export default function ProfileDialog({ patient }) {
         setOpen(!open);
         setOpenSetting(!openSetting)
     }
+
+    const patientData = localStorage.getItem('patient');
+
+    if (!patientData) {
+      console.log('Aucun patient trouvé');
+    }
+    
+    // TODO : gérer le cas ou le patient n'est pas trouvé
+    const patient = JSON.parse(patientData);
 
 return (
     <div>

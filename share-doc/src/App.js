@@ -25,6 +25,13 @@ function App() {
   // Création de notre patient
   const patient = UserFactory.createBasicPatient()
 
+  // réinitialise les data (très utile)
+
+  // localStorage.removeItem('patient');
+  // const patientData = JSON.stringify(patient); // Convertir l'objet en une chaîne JSON
+  // localStorage.setItem('patient', patientData); // Enregistrer les données dans localStorage
+  // setData(patientData);
+
   useEffect(() => {
     // Récupérer les données depuis localStorage au chargement de l'application
     const storedData = localStorage.getItem('patient');
@@ -49,6 +56,10 @@ function App() {
 
       // Utiliser l'objet patient
       console.log(patient.firstName); // Affiche "John"
+
+      const newPatient = JSON.parse(UserFactory.createBasicPatient());
+      localStorage.setItem('patient', newPatient); // Enregistrer les données dans localStorage
+      setData(newPatient)
     }   else {
       // Aucune donnée trouvée dans le localStorage
       console.log('Aucun patient trouvé');
@@ -60,11 +71,11 @@ function App() {
 
   return (
     <div className={classes.app}>
-      <Header patient={patient}/>
-      <HomePatient patient={patient} />
-      {/* <p>Données stockées : {data}</p>
-      <button onClick={handleSaveData}>Enregistrer les données</button>
-      <button onClick={handleClearData}>Effacer les données</button> */}
+      <Header />
+      <HomePatient />
+      <p>Données stockées : {data}</p>
+      {/* <button onClick={handleSaveData}>Enregistrer les données</button>
+      <button onClick={handleClearData}>Réinitialise les données</button> */}
     </div>
   );
 }

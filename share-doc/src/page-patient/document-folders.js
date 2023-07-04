@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FolderIcon from '@material-ui/icons/Folder';
 import FileList from './file-list';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
 
 const DocumentFolders = ({ documents, folders }) => {      
     const [selectedFolder, setSelectedFolder] = useState(null);
@@ -27,25 +27,25 @@ const DocumentFolders = ({ documents, folders }) => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <div style={{ width: '50%' }}>
-                <div>
-                    {folders.map((folderName) => (
+            <div style={{ width: '20%' }}>
+                {folders.map((folderName) => (
+                    <Button style={{ }} onClick={() => handleFolderClick(folderName)}>
                     <Card key={folderName}>
                     <CardContent>
-                        <IconButton onClick={() => handleFolderClick(folderName)}>
+                        {/* <IconButton onClick={() => handleFolderClick(folderName)}> */}
                         <FolderIcon />
-                        </IconButton>
+                        {/* </IconButton> */}
                         <Typography variant="h6">{folderName}</Typography>
                     </CardContent>
                     </Card>
-            ))}
-                </div>
+                    </Button>
+                ))}
             </div>
-        <div style={{ width: '50%' }}>
-        {selectedFolder != null && (
-              <FileList documents = {documents} folderName={selectedFolder} />
-            )}
-        </div>
+            <div style={{ width: '100%' }}>
+            {selectedFolder != null && (
+                <FileList documents = {documents} folderName={selectedFolder} folders={folders}/>
+                )}
+            </div>
         </div>
   );
 };

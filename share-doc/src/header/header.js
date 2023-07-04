@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { BLUE_COLOR } from './../ressources/constants'; 
 import logo from "./../assets/logo.png";
 
-const Header = ({ patient }) => {
+const Header = () => {
   return (
     <AppBar position="static" style={{ backgroundColor: BLUE_COLOR }}>
       <Toolbar>
@@ -14,7 +14,8 @@ const Header = ({ patient }) => {
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           Share Doc
         </Typography>
-        <ProfileDialog patient={patient}/>
+         Il faut reload la page après chaque action pour voir le résultat
+        <ProfileDialog />
       </Toolbar>
     </AppBar>
   );

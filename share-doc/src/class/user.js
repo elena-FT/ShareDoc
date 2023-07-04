@@ -1,6 +1,8 @@
 export default class User {
-  constructor(firstName, lastName, dateOfBirth, id, mail, callNumber, password, isDoctor = false) {
-    this.id = id;
+  static lastId = 0
+
+  constructor(firstName, lastName, dateOfBirth, mail, callNumber, password, isDoctor = false) {
+    this.id = ++User.lastId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.dateOfBirth = dateOfBirth;
