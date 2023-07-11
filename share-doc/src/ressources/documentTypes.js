@@ -13,5 +13,5 @@ const DocumentTypes = {
     Autres: 'Autres documents',
   };
   
-  export default DocumentTypes;
+export default DocumentTypes;
   

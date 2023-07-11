@@ -1,11 +1,10 @@
-import ButtonNew from '../components/button/button-new';
+import ButtonNew from '../components/button-new';
 import DoctorList from './doctor-list';
 import DocumentsPage from './documents-page';
 import { makeStyles } from '@material-ui/core/styles';
 
-function HomePatient( { patient }) {
+function HomePatient() {
   const classes = useStyles();
-  console.log('patient', patient)
 
   return (
     <div className={classes.home}>
