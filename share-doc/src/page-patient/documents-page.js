@@ -11,7 +11,11 @@ const DocumentsPage = () => {
 
   // TODO : gérer le cas ou le patient n'est pas trouvé
   const patient = JSON.parse(patientData);
+
   const documents = patient.documents;
+    if (!documents){
+      return <div></div>
+    }
 
   const styles = {
     fontFamily: "Open Sans, sans-serif",
@@ -32,7 +36,7 @@ const DocumentsPage = () => {
       <p>
         Retrouvez ici vos documents partagés.
       </p>
-      <DocumentFolders documents = { documents } folders={folders}/>
+       <DocumentFolders documents = { documents } folders={folders}/>
     </div>
   );
 };

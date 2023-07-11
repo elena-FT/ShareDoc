@@ -14,6 +14,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Doctor } from '../class/doctor.js'
 
+
 // TODO : gérer le cas de suppression d'un docteur (dans le même bouton que celui pour ajouter un docteur)
 
 const useStyles = makeStyles({
@@ -39,6 +40,7 @@ const DoctorList = () => {
   const [doctorName, setDoctorName] = React.useState('');
 
   const patientData = localStorage.getItem('patient');
+  const classes = useStyles();
 
   if (!patientData) {
     console.log('Aucun patient trouvé');
@@ -47,6 +49,9 @@ const DoctorList = () => {
   // TODO : gérer le cas ou le patient n'est pas trouvé
   const patient = JSON.parse(patientData);
   const doctors = patient.doctors;
+    if (!doctors){
+      return <div></div>
+    }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -66,8 +71,6 @@ const DoctorList = () => {
     }
   }
 
-  const classes = useStyles();
-
   const handleDoctorClick = (doctorId) => {
     console.log('Clicked doctor:', doctorId);
   };
@@ -79,7 +82,7 @@ const DoctorList = () => {
         <Typography variant="h6" gutterBottom>
           Liste des docteurs
         </Typography>
-        {doctors.map((doctor) => (
+        { doctors.map((doctor) => (
           <Typography
             key={doctor.id}
             className={classes.doctorItem}
