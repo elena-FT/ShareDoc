@@ -1,14 +1,13 @@
 import React, {useState} from 'react'
-import {Box, Container, FormControl, Input, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import {Box, Container, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {BLUE_COLOR} from "../ressources/constants";
-import {focus} from "@testing-library/user-event/dist/focus";
 import Button from "@material-ui/core/Button";
-import {AccountCircle, Title} from "@material-ui/icons";
 import {useNavigate} from 'react-router-dom';
 import Typography from "@material-ui/core/Typography";
 import {Alert, Grid} from "@mui/material";
-import User from "../class/user";
+import Doctor from '../class/doctor.js';
+import Patient from "../class/patient.js";
 import * as PropTypes from "prop-types";
 
 
@@ -98,23 +97,30 @@ const SignUpPage = () => {
     }
     const handlSubmitButton = (event) => {
         const storedPatients = localStorage.getItem('patient');
-        handleSetAlert();
+        const storedDoctors = localStorage.getItem('doctor');
+       
         let patients = []
+        let doctors = []
         if (storedPatients) {
             var newPatient = null;
+            var newDoctor = null;
             var  data = []
             patients = JSON.parse(storedPatients)
+            doctors = JSON.parse(storedDoctors)
             switch (role) {
-                case "doctor":
-                    newPatient = new User(firstName, lastName, dateOfBirth, mail, callNumber, password, true);
-                    data = [patients, ...[newPatient]]
+                case "medecin":
+                    newDoctor = new Doctor(firstName, lastName, callNumber, mail, password);
+                    data = [doctors, ...[newDoctor]]
                     localStorage.setItem("doctor", JSON.stringify(data))
                     break;
                 case "patient":
-                    newPatient = new User(firstName, lastName, dateOfBirth, mail, callNumber, password, false);
+                    newPatient = new Patient(firstName, lastName, callNumber, mail, password, dateOfBirth, socialSecurityNumber);
                     data = [patients, ...[newPatient]]
                     localStorage.setItem("patient", JSON.stringify(data))
-
+                    break;
+                default: 
+                    handleSetAlert();
+                    console.log('need to select');
                     break;
 
             }

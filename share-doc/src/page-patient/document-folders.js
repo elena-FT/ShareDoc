@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import FolderIcon from '@material-ui/icons/Folder';
 import FileList from './file-list';
 import Button from '@mui/material/Button';
@@ -17,24 +16,15 @@ const DocumentFolders = ({ documents, folders }) => {
         setSelectedFolder(folderName);
     };
 
-    // const handleFolderClicke= (folderName) => {
-    //     const folderDocuments = documents.filter((document) => document.folderName === folderName);
-    //     console.log('Documents du dossier', folderName);
-    //     folderDocuments.forEach((document) => {
-    //       console.log(document.name);
-    //     });
-    //   };
-
     return (
         <div style={{ display: 'flex' }}>
             <div style={{ width: '20%' }}>
                 {folders.map((folderName) => (
+                    // TODO : change button size to be equal for each folder
                     <Button style={{ }} onClick={() => handleFolderClick(folderName)}>
                     <Card key={folderName}>
                     <CardContent>
-                        {/* <IconButton onClick={() => handleFolderClick(folderName)}> */}
                         <FolderIcon />
-                        {/* </IconButton> */}
                         <Typography variant="h6">{folderName}</Typography>
                     </CardContent>
                     </Card>

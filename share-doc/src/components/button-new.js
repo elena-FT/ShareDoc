@@ -15,7 +15,6 @@ import DocumentTypes from '../ressources/documentTypes';
 import FormatDocument from '../ressources/formatDocument.js';
 
 // TODO : gérer la création d'un nouveau dossier
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -104,7 +103,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
  const uploadFileToDB = (event) => {
 
-  const patientData = localStorage.getItem('patient');
+ const patientData = localStorage.getItem('patient');
 
   if (!patientData) {
     console.log('Aucun patient trouvé');
@@ -151,7 +150,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
   }
 }
 
-const ButtonNew = () => {
+const ButtonNew = ({ emailPatient }) => {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 

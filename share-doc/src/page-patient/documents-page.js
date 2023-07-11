@@ -1,33 +1,27 @@
 import React from 'react';
 import DocumentFolders from './document-folders';
 
-const DocumentsPage = () => {
+const DocumentsPage = ( { emailPatient} ) => {
 
-  const patientData = localStorage.getItem('patient');
+  const storedPatients = localStorage.getItem('patient');
 
-  if (!patientData) {
-    console.log('Aucun patient trouvé');
+  if (!storedPatients) {
+    console.log('Db patient not found');
+    return;
   }
 
-  // TODO : gérer le cas ou le patient n'est pas trouvé
-  const patient = JSON.parse(patientData);
+  const patients = JSON.parse(storedPatients);
+  const patient = Object.values(patients).find(patient=> patient.mail === emailPatient);
 
-  const documents = patient.documents;
-    if (!documents){
-      return <div></div>
-    }
+  if (!patient) {
+    console.log('Patient not found');
+    return;
+  }
 
-  const styles = {
-    fontFamily: "Open Sans, sans-serif",
-    fontSize: "1rem",
-    p: {
-      color: "gray",
-      fontSize: "1rem",
-      fontWeight: "smaller"
-    },
-    width: '100%'
-  };
-
+  const documents = patient.document;
+  if (!documents) {
+    return <div></div>;
+  }
   const folders = Array.from(new Set(documents.map((document) => document.type)));
 
   return (
@@ -36,9 +30,20 @@ const DocumentsPage = () => {
       <p>
         Retrouvez ici vos documents partagés.
       </p>
-       <DocumentFolders documents = { documents } folders={folders}/>
+       <DocumentFolders documents = { documents } folders={ folders }/>
     </div>
   );
+};
+
+const styles = {
+  fontFamily: "Open Sans, sans-serif",
+  fontSize: "1rem",
+  p: {
+    color: "gray",
+    fontSize: "1rem",
+    fontWeight: "smaller"
+  },
+  width: '100%'
 };
 
 export default DocumentsPage;

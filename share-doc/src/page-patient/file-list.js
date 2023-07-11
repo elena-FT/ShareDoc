@@ -16,6 +16,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import EditDoc from './edit-doc.js'
 
+
 const FileList = ({ documents, folderName, folders }) => {
   const files = documents.filter((document) => document.type === folderName);
   const [openEdit, setOpenEdit] = React.useState(false);
@@ -43,13 +44,16 @@ const FileList = ({ documents, folderName, folders }) => {
     });
   };
 
+  // TODO : not the right file
   const handleEditFile = (file) => {
-    console.log('open')
-    fileToEdit = file
-    setOpenEdit(!openEdit);
+    if (file) {
+      console.log('open: ' + file)
+      fileToEdit = file
+      setOpenEdit(!openEdit);
+    }
   };
 
-  // TODO : not functionnal
+  // TODO : not functional
   const openFile = (path) => {
     const patientData = localStorage.getItem('patient');
 
@@ -78,6 +82,7 @@ const FileList = ({ documents, folderName, folders }) => {
     }
   }
 
+  // TODO : not entirely functional
   const downloadFile = (path) => {
     const patientData = localStorage.getItem('patient');
 
@@ -115,10 +120,9 @@ const FileList = ({ documents, folderName, folders }) => {
   
   return (
     <div>
-      {/* {console.log('fte = ' + fileToEdit)}
-      {console.log('folders = ' + folders)} */}
-      { /* temporary choose the file manually to edit */ }
-      {openEdit && <EditDoc /*file={fileToEdit}*/ file={files[0]} folders={folders}/>}
+      {console.log('fte = ' + fileToEdit)}
+      {console.log('folders = ' + folders)}
+      {openEdit && <EditDoc file={fileToEdit} folders={folders} />}
       <TableContainer>
         <Table>
           <TableHead>

@@ -77,9 +77,10 @@ const LoginPage = () => {
 
     }
     const handlSubmitButton = (event) => {
-        if (mail == "" || role == "" || password == "")
+        if (mail === "" || role === "" || password === "")
         {
             handleSetAlert();
+            console.log("No mail or role or password.")
             return;
         }
         switch (role){
@@ -97,6 +98,7 @@ const LoginPage = () => {
                     else
                         handleSetAlert();
                 }
+                break;
             case "doctor":
                 const storedDoctors = localStorage.getItem('doctor');
                 if (storedDoctors){
@@ -111,6 +113,12 @@ const LoginPage = () => {
                     else
                         handleSetAlert();
                 }
+                break;
+            default:
+                handleSetAlert();
+                console.log("Need to select a role.")
+                return;
+
         }
 
     }

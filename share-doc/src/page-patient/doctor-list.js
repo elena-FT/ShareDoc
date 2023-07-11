@@ -12,42 +12,30 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Doctor } from '../class/doctor.js'
+import Doctor from '../class/doctor.js'
 
 
 // TODO : gérer le cas de suppression d'un docteur (dans le même bouton que celui pour ajouter un docteur)
-
-const useStyles = makeStyles({
-  icon: {
-    color: 'lightgrey',
-  },
-  card: {
-    marginBottom: '1rem',
-  },
-  doctorItem: {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    marginBottom: '0.5rem',
-  },
-  icon: {
-    marginRight: '0.5rem',
-  },
-});
-
-const DoctorList = () => {
+const DoctorList = ({ emailPatient }) => {
   const [open, setOpen] = React.useState(false);
   const [doctorName, setDoctorName] = React.useState('');
 
-  const patientData = localStorage.getItem('patient');
   const classes = useStyles();
 
-  if (!patientData) {
-    console.log('Aucun patient trouvé');
+  const storedPatients = localStorage.getItem('patient');
+  if (!storedPatients) {
+    console.log('DB patient not found');
+    return;
   }
 
-  // TODO : gérer le cas ou le patient n'est pas trouvé
-  const patient = JSON.parse(patientData);
+  const patients = JSON.parse(storedPatients);
+  const patient = Object.values(patients).find(patient=> patient.mail === emailPatient)
+
+  if (!patient) {
+    console.log('Patient not found');
+    return;
+  }
+
   const doctors = patient.doctors;
     if (!doctors){
       return <div></div>
@@ -135,5 +123,23 @@ const DoctorList = () => {
   </div>
   );
 };
+
+const useStyles = makeStyles({
+  icon: {
+    color: 'lightgrey',
+  },
+  card: {
+    marginBottom: '1rem',
+  },
+  doctorItem: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    marginBottom: '0.5rem',
+  },
+  icon: {
+    marginRight: '0.5rem',
+  },
+});
 
 export default DoctorList;

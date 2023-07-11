@@ -2,7 +2,8 @@ import { PatientBuilder } from './patient-builder.js';
 import DocumentTypes from '../ressources/documentTypes';
 import { Document } from '../class/document';
 import FormatDocument from '../ressources/formatDocument.js';
-import { Doctor } from '../class/doctor.js'
+import Doctor from '../class/doctor.js'
+
 export class UserFactory {
     static createBasicPatient() {
         const patient = PatientBuilder.buildPatient('Simon', 'Bouvier', '07 05 89 65 14', 'simon.bouvier@gmail.com', '1234', '1990-01-01', '1 90 01 01 123 456');
