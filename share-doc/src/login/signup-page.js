@@ -7,8 +7,9 @@ import Button from "@material-ui/core/Button";
 import {AccountCircle, Title} from "@material-ui/icons";
 import {useNavigate} from 'react-router-dom';
 import Typography from "@material-ui/core/Typography";
-import {Grid} from "@mui/material";
+import {Alert, Grid} from "@mui/material";
 import User from "../class/user";
+import * as PropTypes from "prop-types";
 
 
 const useStyles = makeStyles({
@@ -48,20 +49,28 @@ const useStyles = makeStyles({
         marginLeft: '10px'
     },
     signup: {
-        fontSize:'10px',
+        fontSize: '10px',
     }
 
 
 });
+
+function CheckCircleOutlineIcon(props) {
+    return null;
+}
+
+CheckCircleOutlineIcon.propTypes = {fontSize: PropTypes.string};
 const SignUpPage = () => {
 
     const navigate = useNavigate();
+    const [alert,setAlert] = useState(false)
     const [role, setRole] = useState('')
     const [password, setPassword] = useState('')
     const [dateOfBirth, setDateOfBirth] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [socialSecurityNumber, setSecurityNumber] = useState('')
+    const [userName, setUsername] = useState('')
     const [callNumber, setCallNumber] = useState('')
     const [mail, setMail] = useState('')
 
@@ -69,35 +78,59 @@ const SignUpPage = () => {
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
     };
-    const handleLastNameChange = (event) =>{
+    const handleSecurityNumberChange = (event) =>{
+        setSecurityNumber(event.target.value);
+    }
+    const handleUserNameChange = (event) =>{
+        setUsername(event.target.value);
+    }
+    const handleLastNameChange = (event) => {
         setLastName(event.target.value);
     }
-     const handlePasswordChange = (event) => {
+    function handleSetAlert() {
+        setAlert(true);
+    }
+    const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     };
-    const handleRoleChange = (event) =>{
+    const handleRoleChange = (event) => {
         setRole(event.target.value);
     }
-    const handlSubmitButton = (event) =>{
+    const handlSubmitButton = (event) => {
         const storedPatients = localStorage.getItem('patient');
+        handleSetAlert();
         let patients = []
         if (storedPatients) {
+            var newPatient = null;
+            var  data = []
             patients = JSON.parse(storedPatients)
-            console.log(patients)
+            switch (role) {
+                case "medecin":
+                    newPatient = new User(firstName, lastName, dateOfBirth, mail, callNumber, password, true);
+                    data = [patients, ...[newPatient]]
+                    localStorage.setItem("medecin", JSON.stringify(data))
+                    break;
+                case "patient":
+                    newPatient = new User(firstName, lastName, dateOfBirth, mail, callNumber, password, false);
+                    data = [patients, ...[newPatient]]
+                    localStorage.setItem("patient", JSON.stringify(data))
+
+                    break;
+
+            }
         }
-        patients[patients.length + 1] = new User(firstName,lastName,dateOfBirth,mail,callNumber,password,false)
-       localStorage.setItem('patient',JSON.stringify(patients));
-
-
     }
-    const handleDateOfBirthChange = (event) =>{
+    const handleDateOfBirthChange = (event) => {
         setDateOfBirth(event.target.value);
     }
-    const handleCallNumberChange = (event) =>{
+    const handleCallNumberChange = (event) => {
         setCallNumber(event.target.value);
     }
-    const handleMailChange = (event) =>{
+    const handleMailChange = (event) => {
         setMail(event.target.value);
+    }
+    const handleBackLogin = (event) =>{
+        navigate("/")
     }
     return (
         <Container className={classes.root}>
@@ -115,24 +148,24 @@ const SignUpPage = () => {
                         <TextField
                             className={classes.field}
                             variant='outlined'
-                            label="Nom"
-                            value={lastName}
-                            onChange={handleLastNameChange}
+                            label="Prénom"
+                            value={firstName}
+                            onChange={handleFirstNameChange}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
-                            label="Prenom"
+                            label="Nom de famill"
                             variant='outlined'
-                            value={firstName}
-                            onChange={handleFirstNameChange}
+                            value={lastName}
+                            onChange={handleLastNameChange}
                         />
                     </Grid>
 
                     <Grid item xs={6}>
                         <TextField
-                            label="Date de naissance"
                             variant='outlined'
+                            type='date'
                             value={dateOfBirth}
                             onChange={handleDateOfBirthChange}
                         />
@@ -143,6 +176,22 @@ const SignUpPage = () => {
                             variant='outlined'
                             value={mail}
                             onChange={handleMailChange}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            label="Pseudo"
+                            variant='outlined'
+                            value={userName}
+                            onChange={handleUserNameChange}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            label="No. Securité Sociale"
+                            variant='outlined'
+                            value={socialSecurityNumber}
+                            onChange={handleSecurityNumberChange}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -176,6 +225,14 @@ const SignUpPage = () => {
                 >
                     Creer un compte
                 </Button>
+                <Button onClick={handleBackLogin} className={classes.signup}>Retour à la page login</Button>
+                { alert && <Alert
+                    iconMapping={{
+                        success: <CheckCircleOutlineIcon fontSize="inherit" />,
+                    }}
+                >
+                    {firstName}, votre compte a bien été créé.
+                </Alert> }
             </Box>
 
         </Container>
