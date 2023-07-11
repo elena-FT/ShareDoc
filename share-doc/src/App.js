@@ -4,7 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import HomePatient from './page-patient/home-patient';
 import React, { useState, useEffect } from 'react';
 import { UserFactory } from './factories/user-factory';
-import { GRAY } from './ressources/constants'; 
+import { GRAY } from './ressources/constants';
+import {Route, BrowserRouter , Routes} from "react-router-dom";
+import LoginPage from "./login/login-page";
+import SignupPage from "./login/signup-page";
+
 
 const useStyles = makeStyles({
   app: {
@@ -38,6 +42,7 @@ function App() {
     if (storedData) {
       setData(storedData);
     }
+    handleSaveData()
   }, []);
 
   const handleSaveData = () => {
@@ -72,7 +77,14 @@ function App() {
   return (
     <div className={classes.app}>
       <Header />
-      <HomePatient />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage/>}></Route>
+          <Route path="/signup" element={<SignupPage/>}></Route>
+          <Route path="/homepatient" element={<HomePatient/>}></Route>
+        </Routes>
+      </BrowserRouter>
+
       <p>Données stockées : {data}</p>
       {/* <button onClick={handleSaveData}>Enregistrer les données</button>
       <button onClick={handleClearData}>Réinitialise les données</button> */}
