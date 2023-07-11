@@ -1,17 +1,14 @@
-import { UserBuilder } from './user-builder.js';
+import { PatientBuilder } from './patient-builder.js';
 import DocumentTypes from '../ressources/documentTypes';
 import { Document } from '../class/document';
 import FormatDocument from '../ressources/formatDocument.js';
 import { Doctor } from '../class/doctor.js'
 export class UserFactory {
     static createBasicPatient() {
-        const patient = UserBuilder.buildUser('Simon', 'Bouvier', '1990-01-01', 1, 'simon.bouvier@gmail.com', '07 05 89 65 14', '1234');
+        const patient = PatientBuilder.buildPatient('Simon', 'Bouvier', '07 05 89 65 14', 'simon.bouvier@gmail.com', '1234', '1990-01-01', '1 90 01 01 123 456');
         patient.doctors = [
-          new Doctor('Dr. John Doe'),
-          new Doctor('Dr. Jane Smith'),
-          new Doctor('Dr. David Johnson')
+          new Doctor('Michel', 'Bouvier', '06 85 98 47 78', 'michel.bouvier@gmail.com', '123'),
         ];
-        patient.socialSecurityNumber = '1 90 01 01 123 456';
         patient.documents = [
           new Document('Document1', 'IRM/Document1', new Date(), DocumentTypes.IRM, FormatDocument.PDF, 'test'),
           new Document('Document2', 'IRM/Document2', new Date(), DocumentTypes.IRM, FormatDocument.PNG, 'test'),

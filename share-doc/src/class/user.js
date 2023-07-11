@@ -1,18 +1,14 @@
 export default class User {
-  id;
-  firstName;
-  lastName;
-  callNumber;
-  mail;
-  password;
-  documents = [];
 
-  constructor() {
-    if (this.constructor === User) {
-      throw new TypeError('Abstract class "User" cannot be instantiated directly');
-    }
+  static lastId = 0;
+
+  constructor(firstName, lastName, callNumber, mail, password) {
+    this.id = ++User.lastId;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.callNumber = callNumber;
+    this.mail = mail;
+    this.password = password;
+    this.documents = [];
   }
-    setDocument(document) {
-      this.documents.push(document);
-    }
 }

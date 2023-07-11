@@ -84,7 +84,11 @@ const LoginPage = () => {
                     const patients = JSON.parse(storedPatients);
                     const patient = Object.values(patients).find(patient=> patient.mail === mail && patient.password === password)
                     if (patient)
-                        navigate("/homepatient")
+                        navigate("/homepatient", {
+                            state : {
+                                mail
+                            }
+                        })
                     else
                         handleSetAlert();
                 }

@@ -2,9 +2,13 @@ import ButtonNew from '../components/button-new';
 import DoctorList from './doctor-list';
 import DocumentsPage from './documents-page';
 import { makeStyles } from '@material-ui/core/styles';
+import { useLocation } from 'react-router-dom';
 
 function HomePatient() {
   const classes = useStyles();
+
+  const email = useLocation().state.mail
+  console.log(email)
 
   return (
     <div className={classes.home}>
