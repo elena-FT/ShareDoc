@@ -77,6 +77,11 @@ const LoginPage = () => {
 
     }
     const handlSubmitButton = (event) => {
+        if (mail == "" || role == "" || password == "")
+        {
+            handleSetAlert();
+            return;
+        }
         switch (role){
             case "patient":
                 const storedPatients = localStorage.getItem('patient');
@@ -85,6 +90,20 @@ const LoginPage = () => {
                     const patient = Object.values(patients).find(patient=> patient.mail === mail && patient.password === password)
                     if (patient)
                         navigate("/homepatient", {
+                            state : {
+                                mail
+                            }
+                        })
+                    else
+                        handleSetAlert();
+                }
+            case "doctor":
+                const storedDoctors = localStorage.getItem('doctor');
+                if (storedDoctors){
+                    const doctors = JSON.parse(storedDoctors);
+                    const doctor = Object.values(doctors).find(doctor=> doctor.mail === mail && doctor.password === password)
+                    if (doctor)
+                        navigate("/homedoctor", {
                             state : {
                                 mail
                             }
@@ -103,7 +122,7 @@ const LoginPage = () => {
                 <Select labelId="role-label" onChange={handleRoleChange}
                         className={classes.select} label="Vous êtes? " displayEmpty value={role}
                 >
-                    <MenuItem value="medecin">Medecin</MenuItem>
+                    <MenuItem value="doctor">Medecin</MenuItem>
                     <MenuItem value="patient">Patient</MenuItem>
                 </Select>
                 <TextField

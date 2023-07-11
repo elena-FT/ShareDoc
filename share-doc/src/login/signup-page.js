@@ -105,10 +105,10 @@ const SignUpPage = () => {
             var  data = []
             patients = JSON.parse(storedPatients)
             switch (role) {
-                case "medecin":
+                case "doctor":
                     newPatient = new User(firstName, lastName, dateOfBirth, mail, callNumber, password, true);
                     data = [patients, ...[newPatient]]
-                    localStorage.setItem("medecin", JSON.stringify(data))
+                    localStorage.setItem("doctor", JSON.stringify(data))
                     break;
                 case "patient":
                     newPatient = new User(firstName, lastName, dateOfBirth, mail, callNumber, password, false);
