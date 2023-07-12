@@ -187,14 +187,7 @@ const SignUpPage = () => {
                             onChange={handleMailChange}
                         />
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Pseudo"
-                            variant='outlined'
-                            value={userName}
-                            onChange={handleUserNameChange}
-                        />
-                    </Grid>
+
                     <Grid item xs={6}>
                         <TextField
                             label="No. Securité Sociale"
@@ -213,17 +206,16 @@ const SignUpPage = () => {
                             onChange={handleCallNumberChange}
                         />
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            label="Mot de passe"
-                            variant='outlined'
-                            type="password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                        />
-                    </Grid>
+
 
                 </Grid>
+                <TextField
+                    label="Mot de passe"
+                    variant='outlined'
+                    type="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                />
 
 
                 <Button

@@ -91,7 +91,7 @@ const ButtonNew = ({ emailPatient }) => {
     <div>
       <input type="file" id="fileInput" style={{ display: 'none' }} onChange={uploadFileToDB} />
       <Button variant="contained" color="primary" className={classes.roundedButton} onClick={() => document.getElementById('fileInput').click()}>
-        + Nouveau
+        + Ajouter un document
       </Button>
       {selectedFile && (
         <Dialog open={openDialog}>

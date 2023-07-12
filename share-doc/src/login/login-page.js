@@ -136,7 +136,8 @@ const LoginPage = () => {
                 <TextField
                     className={classes.field}
                     variant='outlined'
-                    label="Nom d'utilisateur"
+                    label="E-mail"
+                    required='true'
                     value={mail}
                     onChange={handleMailChange}
 
@@ -145,6 +146,7 @@ const LoginPage = () => {
                     label="Mot de passe"
                     variant='outlined'
                     type="password"
+                    required='true'
                     value={password}
                     onChange={handlePasswordChange}
                 />
