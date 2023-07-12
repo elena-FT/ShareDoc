@@ -110,12 +110,12 @@ const SignUpPage = () => {
             switch (role) {
                 case "medecin":
                     newDoctor = new Doctor(firstName, lastName, callNumber, mail, password);
-                    data = [doctors, ...[newDoctor]]
+                    data = [...doctors, newDoctor]
                     localStorage.setItem("doctor", JSON.stringify(data))
                     break;
                 case "patient":
                     newPatient = new Patient(firstName, lastName, callNumber, mail, password, dateOfBirth, socialSecurityNumber);
-                    data = [patients, ...[newPatient]]
+                    data = [...patients, newPatient]
                     localStorage.setItem("patient", JSON.stringify(data))
                     break;
                 default: 
