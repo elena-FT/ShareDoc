@@ -13,6 +13,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { BLUE_COLOR } from '../ressources/constants.js'
 import DialogActions from '@mui/material/DialogActions';
+import DocumentTypes from '../ressources/documentTypes.js';
+import InputLabel from '@mui/material/InputLabel';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,57 +49,48 @@ function a11yProps(index) {
   };
 }
 
-const EditDoc = ({file, folders}) => {
+const EditDoc = ({ emailPatient, file, folders }) => {
   const [value, setValue] = React.useState(0);
   const [openEdit, setOpenEdit] = React.useState(true);
   const [move, setMove] = React.useState('');
   const [newName, setNewName] = React.useState('');
-  const [newType, setNewType] = React.useState('');
   const [validateDelete, setValidateDelete] = React.useState(false);
 
   console.log('file :' + file)
-  console.log('folder :' + folders)
 
-  // tmp, can't retrieve folders
-  const foldersTmp = ['IRM', 'Radio'];
+  const handleEditNameFile = () => {
+    if (newName) {
+      const storedPatients = localStorage.getItem('patient');
 
-  const handleEditSaveInfo = () => {
-    console.log('new anme :' + newName)
-    console.log('new type :' + newType)
-    if (newName || newType) {
-      const patientData = localStorage.getItem('patient');
-
-      if (!patientData) {
-        console.log('Aucun patient trouvé');
-        
-      } else {
-        const patient = JSON.parse(patientData);
-        const index = patient.documents.findIndex(obj => obj.path === file.path);
-    
-        if (index !== -1) {
-          console.log(patient.documents[index]);
-
-          if (newName)
-            patient.documents[index].name = newName;
-
-          if (newType)
-            patient.documents[index].type = newType;
-
-          const updatedPatientData  = JSON.stringify(patient);
-          localStorage.setItem('patient', updatedPatientData );
-
-          console.log('Objet modifié');
-        } else {
-          console.log('Aucun objet trouvé avec le chemin ', file.path);
-        }
+      if (!storedPatients) {
+        return;
       }
+
+      const patients = JSON.parse(storedPatients);
+      const indexPatient = patients.findIndex((patient) => patient.mail === emailPatient);
+
+      if (indexPatient === -1) {
+        console.log('Patient not found');
+        return;
+      }
+
+      const indexDoc = patients[indexPatient].documents.findIndex(obj => obj.path === file.path);
+      if (indexDoc === -1) {
+        console.log('Document doesn\'t exists in the LocalStorage')
+        return;
+      }
+
+      patients[indexPatient].documents[indexDoc].name = newName;
+
+      const updatedPatientDB = JSON.stringify(patients);
+      localStorage.setItem('patient', updatedPatientDB);
+      
       setNewName('');
-      setNewType('');
       setOpenEdit(false);
     }
   };
 
-  // TODO
+  // TODO : modified access
   const handleEditSaveAccess = () => {
     setOpenEdit(false);
   };
@@ -119,28 +112,31 @@ const EditDoc = ({file, folders}) => {
   };
 
   const handleDeleteFile = () => {
-    console.log('delete file : ' + file.name)
+    const storedPatients = localStorage.getItem('patient');
 
-    const patientData = localStorage.getItem('patient');
-
-    if (!patientData) {
-      console.log('Aucun patient trouvé');
-    } else {
-      const patient = JSON.parse(patientData);
-      const index = patient.documents.findIndex(obj => obj.path === file.path);
-  
-      if (index !== -1) {
-        console.log(patient.documents[index])
-        patient.documents.splice(index, 1);
-
-        const updatedPatientData  = JSON.stringify(patient);
-        localStorage.setItem('patient', updatedPatientData );
-
-        console.log('Objet supprimé');
-      } else {
-        console.log('Aucun objet trouvé avec le chemin', file.path);
-      }
+    if (!storedPatients) {
+      return;
     }
+
+    const patients = JSON.parse(storedPatients);
+    const indexPatient = patients.findIndex((patient) => patient.mail === emailPatient);
+
+    if (indexPatient === -1) {
+      console.log('Patient not found');
+      return;
+    }
+
+    const indexDoc = patients[indexPatient].documents.findIndex(obj => obj.path === file.path);
+    if (indexDoc === -1) {
+      console.log('Document doesn\'t exists in the LocalStorage')
+      return;
+    }
+
+    patients[indexPatient].documents.splice(indexDoc, 1);
+
+    const updatedPatientDB = JSON.stringify(patients);
+    localStorage.setItem('patient', updatedPatientDB);
+    
     setValidateDelete(false)
     setOpenEdit(false)
   }
@@ -150,29 +146,34 @@ const EditDoc = ({file, folders}) => {
 
       console.log('move file to folder ' + move)
 
-      const patientData = localStorage.getItem('patient');
+      const storedPatients = localStorage.getItem('patient');
 
-      if (!patientData) {
-        console.log('Aucun patient trouvé');
-      } else {
-        const patient = JSON.parse(patientData);
-        const index = patient.documents.findIndex(obj => obj.path === file.path);
-    
-        if (index !== -1) {
-          console.log(patient.documents[index])
-          const oldPath = patient.documents[index].path;
-          patient.documents[index].path = move + '/' + oldPath.split('/').pop();
-          console.log(move)
-          console.log(patient.documents[index].path)
-
-          const updatedPatientData  = JSON.stringify(patient);
-          localStorage.setItem('patient', updatedPatientData );
-
-          console.log('Objet déplacé');
-        } else {
-          console.log('Aucun objet trouvé avec le chemin', file.path);
-        }
+      if (!storedPatients) {
+        return;
       }
+
+      const patients = JSON.parse(storedPatients);
+      const indexPatient = patients.findIndex((patient) => patient.mail === emailPatient);
+
+      if (indexPatient === -1) {
+        console.log('Patient not found');
+        return;
+      }
+
+      const indexDoc = patients[indexPatient].documents.findIndex(obj => obj.path === file.path);
+      if (indexDoc === -1) {
+        console.log('Document doesn\'t exists in the LocalStorage')
+        return;
+      }
+
+      const oldPath = patients[indexPatient].documents[indexDoc].path;
+      patients[indexPatient].documents[indexDoc].path = move + '/' + oldPath.split('/').pop();
+
+      patients[indexPatient].documents[indexDoc].type = move;
+
+      const updatedPatientDB = JSON.stringify(patients);
+      localStorage.setItem('patient', updatedPatientDB);
+
       setMove('');
       setOpenEdit(false)
     }
@@ -228,22 +229,7 @@ const EditDoc = ({file, folders}) => {
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
                     />
-                    <br />
-                    { /* TODO : faire un select */ }
-                    <strong>Modifier le type du document (ex: IRM,PDF)</strong> 
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="type"
-                        label="Nouveau Type (change to select)"
-                        type="type"
-                        fullWidth
-                        variant="standard"
-                        value={newType}
-                        onChange={(e) => setNewType(e.target.value)}
-                    />
-                    <br />
-                    <Button onClick={handleEditSaveInfo}>Sauvegarder les changements</Button>
+                    <Button onClick={handleEditNameFile}>Sauvegarder les changements</Button>
                 </TabPanel>
                 <TabPanel value={value} index={1} style={{ display: 'flex', flexDirection: 'column' }}>
                     Modifier les accès aux documents
@@ -251,25 +237,22 @@ const EditDoc = ({file, folders}) => {
                     <Button onClick={handleEditSaveAccess}>Sauvegarder les changements</Button>
                 </TabPanel>
                 <TabPanel value={value} index={2} style={{ display: 'flex', flexDirection: 'column' }}>
-                    Déplacer le document (pas fonctionnel ??)
-
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    Changer le type du document
+                    <Box sx={{ minWidth: 120 }}>
+                      <FormControl fullWidth>
+                        <InputLabel>Type</InputLabel>
                         <Select
-                            value={move}
-                            onChange={(e) => setMove(e.target.value)}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Without label' }}
+                          value={move}
+                          label="Type"
+                          onChange={(e) => setMove(e.target.value)}
                         >
-
-                          <MenuItem value="">
-                              <em>None</em>
-                          </MenuItem>
-                          {console.log(folders)}
-                          {foldersTmp.map((item, index) => (
-                              <MenuItem key={index} value={item}>{item}</MenuItem>
-                          ))};
+                          <MenuItem value="">None</MenuItem>
+                          {Object.values(DocumentTypes).map((type) => (
+                            <MenuItem key={type} value={type}>{type}</MenuItem>
+                          ))}
                         </Select>
-                    </FormControl>
+                      </FormControl>
+                    </Box>
 
                     <Button
                         style={{

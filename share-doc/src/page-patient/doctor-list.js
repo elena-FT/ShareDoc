@@ -6,21 +6,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Doctor from '../class/doctor.js'
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
-
-// TODO : gérer le cas de suppression d'un docteur (dans le même bouton que celui pour ajouter un docteur)
 const DoctorList = ({ emailPatient }) => {
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [doctorName, setDoctorName] = React.useState('');
-
-  const classes = useStyles();
 
   const storedPatients = localStorage.getItem('patient');
   if (!storedPatients) {
@@ -29,17 +27,26 @@ const DoctorList = ({ emailPatient }) => {
   }
 
   const patients = JSON.parse(storedPatients);
-  const patient = Object.values(patients).find(patient=> patient.mail === emailPatient)
+  const indexPatient = patients.findIndex((patient) => patient.mail === emailPatient);
 
-  if (!patient) {
+  if (indexPatient === -1) {
     console.log('Patient not found');
     return;
   }
 
-  const doctors = patient.doctors;
-    if (!doctors){
-      return <div></div>
-    }
+  const doctorsPatient = patients[indexPatient].doctors;
+  if (!doctorsPatient){
+    return <div></div>
+  }
+  
+  const storedDoctors = localStorage.getItem('doctor');
+  if (!storedDoctors) {
+    console.log('DB doctors not found');
+    return <div></div>;
+  }
+
+  const doctors = JSON.parse(storedDoctors);
+  const doctotsNameList = doctors.map((objet) => `${objet.firstName} ${objet.lastName}`);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,16 +58,22 @@ const DoctorList = ({ emailPatient }) => {
 
   const handleCreate = () => {
     if (doctorName) {
-      patient.doctors.push(new Doctor(doctorName));
-      const patientUpdatedData = JSON.stringify(patient);
+      const doctor = Object.values(doctors).find(patient=> patient.firstName === doctorName.split(" ")[0])
+      if (!doctor) {
+        console.log('no doctor found');
+        return;
+      }
+      patients[indexPatient].doctors.push(doctor.mail);
+      const patientUpdatedData = JSON.stringify(patients);
       localStorage.setItem('patient', patientUpdatedData);
       setDoctorName('');
       setOpen(false);
     }
   }
 
-  const handleDoctorClick = (doctorId) => {
-    console.log('Clicked doctor:', doctorId);
+  // TODO : delete doctor with a popup that ask
+  const handleDoctorClick = (doctorMail) => {
+    console.log('Clicked doctor:', doctorMail);
   };
 
   return (
@@ -70,17 +83,24 @@ const DoctorList = ({ emailPatient }) => {
         <Typography variant="h6" gutterBottom>
           Liste des docteurs
         </Typography>
-        { doctors.map((doctor) => (
-          <Typography
-            key={doctor.id}
-            className={classes.doctorItem}
-            onClick={() => handleDoctorClick(doctor.id)}>
-            <ListItemIcon className={classes.icon}>
-              <AccountCircleIcon />
-            </ListItemIcon>
-            {doctor.name}
-          </Typography>
-        ))}
+        {doctorsPatient.map((doctorMail) => {
+          const doctor = Object.values(doctors).find(
+            (doctor) => doctor.mail === doctorMail
+          );
+
+          return (
+            <Typography
+              key={doctorMail}
+              className={classes.doctorItem}
+              onClick={() => handleDoctorClick(doctorMail)}
+            >
+              <ListItemIcon className={classes.icon}>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              {doctor && `${doctor.firstName} ${doctor.lastName}`}
+            </Typography>
+          );
+        })}
       </CardContent>
     </Card>
     <Button variant="outlined" onClick={handleClickOpen}>
@@ -89,31 +109,20 @@ const DoctorList = ({ emailPatient }) => {
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Nouveau Docteur</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <strong>Nom du Docteur</strong>
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Prénom Nom"
-          type="name"
-          fullWidth
-          variant="standard"
-          value={doctorName}
-          onChange={(e) => setDoctorName(e.target.value)}
-        />
-        <br />
-        <strong>Hôpital/cabinet où il exerce</strong>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Hôpital / cabinet"
-          type="name"
-          fullWidth
-          variant="standard"
-        />
+        <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <Select
+              value={doctorName}
+              displayEmpty
+              onChange={(e) => setDoctorName(e.target.value)}
+            >
+              <MenuItem value="">None</MenuItem>
+              {Object.values(doctotsNameList).map((name) => (
+                <MenuItem key={name} value={name}>{name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Annuler</Button>

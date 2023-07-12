@@ -15,13 +15,16 @@ import Box from '@mui/material/Box';
 import Popper from '@mui/material/Popper';
 import EditProfileDialog from './edit-profile'
 import SettingsDialog from './settings';
+import { useNavigate } from "react-router-dom";
 
-export default function ProfileDialog() {
+export default function ProfileDialog({ emailPatient }) {
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [placement, setPlacement] = React.useState();
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openSetting, setOpenSetting] = React.useState(false);
+    const navigate = useNavigate();
+
   
     const handleClickOpen = (newPlacement) => (event) => {
       setAnchorEl(event.currentTarget);
@@ -30,7 +33,7 @@ export default function ProfileDialog() {
     };
   
     const handleClose = () => {
-      setOpen(!open);
+        navigate("/");
     };
 
     const handleEditProfile = () => {
@@ -43,14 +46,20 @@ export default function ProfileDialog() {
         setOpenSetting(!openSetting)
     }
 
-    const patientData = localStorage.getItem('patient');
+    const storedPatients = localStorage.getItem('patient');
 
-    if (!patientData) {
-      console.log('Aucun patient trouvé');
+    if (!storedPatients) {
+      console.log('DB patient not found');
+      return;
     }
     
-    // TODO : gérer le cas ou le patient n'est pas trouvé
-    const patient = JSON.parse(patientData);
+    const patients = JSON.parse(storedPatients);
+    const patient = Object.values(patients).find(patient=> patient.mail === emailPatient);
+  
+    if (!patient) {
+      console.log('Patient not found');
+      return;
+    }
 
 return (
     <div>
@@ -67,7 +76,6 @@ return (
                 transition
                 disablePortal 
                 keepMounted
-                onClose={handleClose}
             >
                 {({ TransitionProps, placement }) => (
                     <Slide

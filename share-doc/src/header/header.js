@@ -5,8 +5,13 @@ import ProfileDialog from './profile.js'
 import Typography from '@material-ui/core/Typography';
 import { BLUE_COLOR } from './../ressources/constants'; 
 import logo from "./../assets/logo.png";
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+  const mail = location.state && location.state.mail;
+
+
   return (
     <AppBar position="static" style={{ backgroundColor: BLUE_COLOR }}>
       <Toolbar>
@@ -14,8 +19,7 @@ const Header = () => {
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           Share Doc
         </Typography>
-         Il faut reload la page après chaque action pour voir le résultat
-        <ProfileDialog />
+        {location.pathname === '/homepatient' && <ProfileDialog emailPatient={mail}/>}
       </Toolbar>
     </AppBar>
   );

@@ -6,8 +6,10 @@ import FolderIcon from '@material-ui/icons/Folder';
 import FileList from './file-list';
 import Button from '@mui/material/Button';
 
-const DocumentFolders = ({ documents, folders }) => {      
+const DocumentFolders = ({ emailPatient, documents }) => {      
     const [selectedFolder, setSelectedFolder] = useState(null);
+    const folders = Array.from(new Set(documents.map((document) => document.type)));
+
     const handleFolderClick = (folderName) => {
         if (selectedFolder === folderName) {
             setSelectedFolder(null);
@@ -33,7 +35,7 @@ const DocumentFolders = ({ documents, folders }) => {
             </div>
             <div style={{ width: '100%' }}>
             {selectedFolder != null && (
-                <FileList documents = {documents} folderName={selectedFolder} folders={folders}/>
+                <FileList emailPatient={emailPatient} documents={documents} folderName={selectedFolder} folders={folders}/>
                 )}
             </div>
         </div>

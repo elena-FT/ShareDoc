@@ -17,14 +17,12 @@ import DownloadIcon from '@mui/icons-material/Download';
 import EditDoc from './edit-doc.js'
 
 
-const FileList = ({ documents, folderName, folders }) => {
+const FileList = ({ emailPatient, documents, folderName, folders }) => {
   const files = documents.filter((document) => document.type === folderName);
   const [openEdit, setOpenEdit] = React.useState(false);
   var fileToEdit = null;
-  console.log('folders = ' + folders);
 
   const getDocumentIcon = (format) => {
-    console.log('Type', format)
     switch (format) {
       case 'pdf':
         return <PictureAsPdfIcon />;
@@ -44,85 +42,95 @@ const FileList = ({ documents, folderName, folders }) => {
     });
   };
 
-  // TODO : not the right file
+  // TODO : not the right file sen to be modified
   const handleEditFile = (file) => {
+    console.log('clicked on modified ' + file)
     if (file) {
       console.log('open: ' + file)
       fileToEdit = file
+      console.log('fte = ' + fileToEdit)
       setOpenEdit(!openEdit);
+      file = ''
     }
   };
 
-  // TODO : not functional
+  // TODO : not functional, remove ???????????????
   const openFile = (path) => {
-    const patientData = localStorage.getItem('patient');
+    const storedPatients = localStorage.getItem('patient');
 
-    if (!patientData) {
-      console.log('Aucun patient trouvé');
-      
-    } else {
-      const patient = JSON.parse(patientData);
-      console.log(patient.firstName);
-
-      const doc = patient.documents.find(obj => obj.path === path);
-      if (!doc)
-        console.log('le document n`existe pas dans la db')
-      else {
-        console.log(doc.name);
-
-        const fileData = new Blob([doc.data], { type: 'application/octet-stream' });
-
-        // Créer une URL blob pour le fichier
-        const fileURL = URL.createObjectURL(fileData);
-  
-        // Ouvrir le fichier dans une nouvelle fenêtre ou un nouvel onglet
-        window.open(fileURL);
-
-      } 
+    if (!storedPatients) {
+      console.log('Db patient not found');
+      return;
     }
+
+    const patients = JSON.parse(storedPatients);
+    const patient = Object.values(patients).find(patient=> patient.mail === emailPatient);
+
+    if (!patient) {
+      console.log('Patient not found');
+      return;
+    }
+
+    const doc = patient.documents.find(obj => obj.path === path);
+    if (!doc) {
+      console.log('Document doesn\'t exists in the LocalStorage')
+      return;
+    }
+
+    const fileData = new Blob([doc.data], { type: 'application/octet-stream' });
+
+    // Créer une URL blob pour le fichier
+    const fileURL = URL.createObjectURL(fileData);
+
+    // Ouvrir le fichier dans une nouvelle fenêtre ou un nouvel onglet
+    window.open(fileURL);
   }
 
   // TODO : not entirely functional
   const downloadFile = (path) => {
-    const patientData = localStorage.getItem('patient');
+    const storedPatients = localStorage.getItem('patient');
 
-    if (!patientData) {
-      console.log('Aucun patient trouvé');
-      
-    } else {
-      const patient = JSON.parse(patientData);
-      console.log(patient.firstName);
-
-      const doc = patient.documents.find(obj => obj.path === path);
-      if (!doc)
-        console.log('le document n`existe pas dans la db')
-      else {
-        console.log(doc.name);
-
-        const fileData = new Blob([doc.data], { type: 'application/octet-stream' });
-
-        // Créer une URL blob pour le fichier
-        const fileURL = URL.createObjectURL(fileData);
-
-        // Créer un élément <a> pour déclencher le téléchargement
-        const downloadLink = document.createElement('a');
-        downloadLink.href = fileURL;
-        downloadLink.download = doc.name;
-
-        // Simuler un clic sur le lien pour démarrer le téléchargement
-        downloadLink.click();
-
-        // Libérer l'URL blob après le téléchargement
-        URL.revokeObjectURL(fileURL);
-      } 
+    if (!storedPatients) {
+      console.log('Db patient not found');
+      return;
     }
+
+    const patients = JSON.parse(storedPatients);
+    const patient = Object.values(patients).find(patient=> patient.mail === emailPatient);
+
+    if (!patient) {
+      console.log('Patient not found');
+      return;
+    }
+
+    const doc = patient.documents.find(obj => obj.path === path);
+    if (!doc) {
+      console.log('Document doesn\'t exists in the LocalStorage')
+      return;
+    }
+
+    const fileData = new Blob([doc.data], { type: 'application/octet-stream' });
+
+    // Créer une URL blob pour le fichier
+    const fileURL = URL.createObjectURL(fileData);
+
+    // Créer un élément <a> pour déclencher le téléchargement
+    const downloadLink = document.createElement('a');
+    downloadLink.href = fileURL;
+    downloadLink.download = doc.name;
+
+    // Simuler un clic sur le lien pour démarrer le téléchargement
+    downloadLink.click();
+
+    // Libérer l'URL blob après le téléchargement
+    URL.revokeObjectURL(fileURL);
   }
   
   return (
     <div>
+      { /* always null, use the first file to modified for now */ }
       {console.log('fte = ' + fileToEdit)}
-      {console.log('folders = ' + folders)}
-      {openEdit && <EditDoc file={fileToEdit} folders={folders} />}
+      {openEdit && <EditDoc emailPatient={emailPatient} file={files[0]} /*file={fileToEdit}*/ folders={folders} />}
       <TableContainer>
         <Table>
           <TableHead>
@@ -151,7 +159,7 @@ const FileList = ({ documents, folderName, folders }) => {
                   />
                 </TableCell>
                 <TableCell>
-                  <IconButton onClick={handleEditFile.bind(null, file)}>
+                  <IconButton onClick={() => handleEditFile(file.path)}>
                     <EditIcon />
                   </IconButton>
                 </TableCell>

@@ -18,11 +18,23 @@ const DocumentsPage = ( { emailPatient} ) => {
     return;
   }
 
-  const documents = patient.document;
+  const documents = patient.documents;
   if (!documents) {
-    return <div></div>;
+    return (
+      <div style={styles}>
+        <h1>Documents de santé</h1>
+        <p>
+          Retrouvez ici vos documents partagés.
+        </p>
+        <div style={{ marginTop: '200px', textAlign: 'center' }}>
+          <p style={{ color: 'gray' }}>
+            <em>Vous n'avez actuellement aucun fichier dans votre espace.<br />
+            Appuyez sur 'Nouveau' pour ajouter des fichiers.</em>
+          </p>
+        </div>
+      </div>
+    );
   }
-  const folders = Array.from(new Set(documents.map((document) => document.type)));
 
   return (
     <div style={styles}>
@@ -30,7 +42,7 @@ const DocumentsPage = ( { emailPatient} ) => {
       <p>
         Retrouvez ici vos documents partagés.
       </p>
-       <DocumentFolders documents = { documents } folders={ folders }/>
+       <DocumentFolders emailPatient={emailPatient} documents={ documents }/>
     </div>
   );
 };
@@ -43,7 +55,9 @@ const styles = {
     fontSize: "1rem",
     fontWeight: "smaller"
   },
-  width: '100%'
+  width: '100%',
+  marginLeft: '50px',
+  marginTop: '20px',
 };
 
 export default DocumentsPage;

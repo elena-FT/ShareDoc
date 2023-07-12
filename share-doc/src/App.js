@@ -6,6 +6,7 @@ import { GRAY } from './ressources/constants';
 import {Route, BrowserRouter , Routes} from "react-router-dom";
 import LoginPage from "./login/login-page";
 import SignupPage from "./login/signup-page";
+// import { useLocation } from 'react-router-dom';
 
 
 const useStyles = makeStyles({
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles();
+  // const location = useLocation();
 
   const patientExists = localStorage.getItem('patient');
 
@@ -40,8 +42,8 @@ function App() {
 
   return (
     <div className={classes.app}>
-      {/* TODO : Créer Header*/}
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<LoginPage/>}></Route>
           <Route path="/signup" element={<SignupPage/>}></Route>
