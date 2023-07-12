@@ -11,7 +11,6 @@ const Header = () => {
   const location = useLocation();
   const mail = location.state && location.state.mail;
 
-
   return (
     <AppBar position="static" style={{ backgroundColor: BLUE_COLOR }}>
       <Toolbar>
@@ -20,6 +19,7 @@ const Header = () => {
           Share Doc
         </Typography>
         {location.pathname === '/homepatient' && <ProfileDialog emailPatient={mail}/>}
+        {location.pathname === '/homedoctor' && <ProfileDialog emailPatient={mail}/>}
       </Toolbar>
     </AppBar>
   );

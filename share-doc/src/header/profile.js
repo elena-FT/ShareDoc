@@ -18,6 +18,7 @@ import SettingsDialog from './settings';
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileDialog({ emailPatient }) {
+    console.log("PROFILE: " + emailPatient)
     const [open, setOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [placement, setPlacement] = React.useState();
@@ -46,19 +47,23 @@ export default function ProfileDialog({ emailPatient }) {
         setOpenSetting(!openSetting)
     }
 
-    const storedPatients = localStorage.getItem('patient');
-
-    if (!storedPatients) {
-      console.log('DB patient not found');
-      return;
+    let storedPatient = localStorage.getItem('patient');
+    let storedDoctor = localStorage.getItem('doctor');
+    if (!storedPatient) {
+        console.log('DB patient not found');
+    }
+    if (!storedDoctor) {
+        console.log('DB doctor not found');
     }
     
-    const patients = JSON.parse(storedPatients);
-    const patient = Object.values(patients).find(patient=> patient.mail === emailPatient);
-  
-    if (!patient) {
-      console.log('Patient not found');
-      return;
+    const patients = JSON.parse(storedPatient);
+    const doctors = JSON.parse(storedDoctor);
+
+    const userPatient = Object.values(patients).find(user=> user.mail === emailPatient);
+    const userDoctor = Object.values(doctors).find(user=> user.mail === emailPatient);
+    const user = userPatient || userDoctor;
+    if (!user) {
+      console.log('User not found');
     }
 
 return (
@@ -101,11 +106,11 @@ return (
                             }}
                         >
                             <AccountCircleIcon  alt={"profil"} style={{ fontSize: 70, color: BLUE_COLOR, marginTop: 20 }}/>
-                            <DialogTitle>{patient.firstName + ' ' + patient.lastName}</DialogTitle>
+                            <DialogTitle>{user.firstName + ' ' + user.lastName}</DialogTitle>
                             <DialogContent>
                                 <DialogContentText id="alert-dialog-slide-description">
                                     <strong>N° de sécurité social</strong><br />
-                                    {patient.socialSecurityNumber}
+                                    {user.socialSecurityNumber}
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions>
