@@ -103,7 +103,7 @@ const DoctorList = ({ emailPatient }) => {
         })}
       </CardContent>
     </Card>
-    <Button variant="outlined" onClick={handleClickOpen}>
+    <Button style={{color:'white'}} variant="outlined" onClick={handleClickOpen}>
       Ajouter un nouveau Docteur
     </Button>
     <Dialog open={open} onClose={handleClose}>

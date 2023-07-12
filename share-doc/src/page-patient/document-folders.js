@@ -5,10 +5,24 @@ import Typography from '@material-ui/core/Typography';
 import FolderIcon from '@material-ui/icons/Folder';
 import FileList from './file-list';
 import Button from '@mui/material/Button';
+import {makeStyles} from "@material-ui/core/styles";
+import {BLUE_COLOR} from "../ressources/constants";
 
+const useStyles = makeStyles({
+    folder: {
+        borderRadius: '50px',
+        backgroundColor: BLUE_COLOR
+
+    }
+
+
+
+
+});
 const DocumentFolders = ({ emailPatient, documents }) => {      
     const [selectedFolder, setSelectedFolder] = useState(null);
     const folders = Array.from(new Set(documents.map((document) => document.type)));
+    const classes = useStyles();
 
     const handleFolderClick = (folderName) => {
         if (selectedFolder === folderName) {
@@ -20,14 +34,15 @@ const DocumentFolders = ({ emailPatient, documents }) => {
 
     return (
         <div style={{ display: 'flex' }}>
-            <div style={{ width: '20%' }}>
+            <div style={{width:'20%'}}>
                 {folders.map((folderName) => (
                     // TODO : change button size to be equal for each folder
-                    <Button style={{ }} onClick={() => handleFolderClick(folderName)}>
-                    <Card key={folderName}>
+                    <Button  onClick={() => handleFolderClick(folderName)}>
+                    <Card style={ {borderRadius:'50px',
+                        backgroundColor:BLUE_COLOR,width:'200px',height:'120px'} } key={folderName}>
                     <CardContent>
-                        <FolderIcon />
-                        <Typography variant="h6">{folderName}</Typography>
+                        <FolderIcon style={{color: 'white'}} />
+                        <Typography  style={{textTransform:'none', color:'white'}}  variant="h6">{folderName}</Typography>
                     </CardContent>
                     </Card>
                     </Button>

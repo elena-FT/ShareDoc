@@ -22,7 +22,7 @@ const DocumentsPage = ( { emailPatient} ) => {
   if (!documents) {
     return (
       <div style={styles}>
-        <h1>Documents de santé</h1>
+        <h1>{patient.name},vos documents de santé</h1>
         <p>
           Retrouvez ici vos documents partagés.
         </p>
@@ -38,7 +38,7 @@ const DocumentsPage = ( { emailPatient} ) => {
 
   return (
     <div style={styles}>
-      <h1>Documents de santé</h1>
+      <h1>{patient.firstName}, vos documents de santé</h1>
       <p>
         Retrouvez ici vos documents partagés.
       </p>

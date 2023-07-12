@@ -3,6 +3,7 @@ import DoctorList from './doctor-list';
 import DocumentsPage from './documents-page';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation } from 'react-router-dom';
+import {BLUE_COLOR} from "../ressources/constants";
 
 function HomePatient() {
   const classes = useStyles();
@@ -11,8 +12,8 @@ function HomePatient() {
   return (
     <div className={classes.home}>
       <div className={classes.left}>
-        <ButtonNew emailPatient={email}/>
-        <DoctorList emailPatient={email}/>
+        <ButtonNew style={{marginLeft:'20px'}} emailPatient={email}/>
+        <DoctorList  emailPatient={email}/>
       </div>
       <DocumentsPage emailPatient={email}/>
     </div>
@@ -25,15 +26,19 @@ export default HomePatient;
 const useStyles = makeStyles({
     home: {
       display: 'flex',
-      alignItems: 'flex-start',
+      alignItems: 'space-between',
       width: '100%',
     },
     left: {
+      paddingLeft:'20px',
+        paddingTop:'20px',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'flex-start',
+      backgroundColor: BLUE_COLOR,
+      alignItems: 'center',
       width: '30%',
-      marginLeft: '2rem',
-      marginTop: '2rem',
+      height:'100vh',
+
+
     },
   });
