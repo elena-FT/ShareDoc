@@ -112,14 +112,16 @@ const SignUpPage = () => {
                     newDoctor = new Doctor(firstName, lastName, callNumber, mail, password);
                     data = [...doctors, newDoctor]
                     localStorage.setItem("doctor", JSON.stringify(data))
+                    handleSetAlert();
+
                     break;
                 case "patient":
                     newPatient = new Patient(firstName, lastName, callNumber, mail, password, dateOfBirth, socialSecurityNumber);
                     data = [...patients, newPatient]
                     localStorage.setItem("patient", JSON.stringify(data))
+                    handleSetAlert();
                     break;
                 default: 
-                    handleSetAlert();
                     console.log('need to select');
                     break;
 
@@ -161,7 +163,7 @@ const SignUpPage = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
-                            label="Nom de famill"
+                            label="Nom de famille"
                             variant='outlined'
                             value={lastName}
                             onChange={handleLastNameChange}
@@ -171,6 +173,7 @@ const SignUpPage = () => {
                     <Grid item xs={6}>
                         <TextField
                             variant='outlined'
+                            disabled={role === 'medecin'}
                             type='date'
                             value={dateOfBirth}
                             onChange={handleDateOfBirthChange}
@@ -196,6 +199,8 @@ const SignUpPage = () => {
                         <TextField
                             label="No. Securité Sociale"
                             variant='outlined'
+                            type='number'
+                            disabled={role === 'medecin'}
                             value={socialSecurityNumber}
                             onChange={handleSecurityNumberChange}
                         />
