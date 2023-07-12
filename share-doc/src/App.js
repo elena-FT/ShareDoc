@@ -5,6 +5,7 @@ import HomePatient from './page-patient/home-patient';
 import { GRAY } from './ressources/constants';
 import {Route, BrowserRouter , Routes} from "react-router-dom";
 import LoginPage from "./login/login-page";
+import HomeDoctor from "./page-doctor/page-doctor"; 
 import SignupPage from "./login/signup-page";
 // import { useLocation } from 'react-router-dom';
 
@@ -48,6 +49,7 @@ function App() {
           <Route path="/" element={<LoginPage/>}></Route>
           <Route path="/signup" element={<SignupPage/>}></Route>
           <Route path="/homepatient" element={<HomePatient/>}></Route>
+          <Route path="/homedoctor" element={<HomeDoctor/>}></Route>
         </Routes>
       </BrowserRouter>
 

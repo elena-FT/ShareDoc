@@ -15,11 +15,38 @@ import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import EditDoc from './edit-doc.js'
+import Button from '@material-ui/core/Button';
 
+const modalStyles = {
+  modal: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 999,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 5,
+  },
+  closeButton: {
+    marginTop: 'auto',
+    backgroundColor: BLUE_COLOR,
+    color: 'white',
+  },
+};
 
 const FileList = ({ emailPatient, documents, folderName, folders }) => {
   const files = documents.filter((document) => document.type === folderName);
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [openPreviewState, setOpenPreviewState] = React.useState(false);
+  const [previewFile, setPreviewFile] = React.useState(null);
   var fileToEdit = null;
 
   const getDocumentIcon = (format) => {
@@ -53,6 +80,14 @@ const FileList = ({ emailPatient, documents, folderName, folders }) => {
       file = ''
     }
   };
+
+  // const handleEditFile = (file) => {
+  //   console.log('clicked on modified ' + file)
+  //   if (file) {
+  //     setOpenEdit(!openEdit);
+  //     setPreviewFile(file);
+  //   }
+  // };
 
   // TODO : not functional, remove ???????????????
   const openFile = (path) => {
@@ -125,12 +160,53 @@ const FileList = ({ emailPatient, documents, folderName, folders }) => {
     // Libérer l'URL blob après le téléchargement
     URL.revokeObjectURL(fileURL);
   }
+
+  const openPreview = (file) => {
+    setOpenPreviewState(true);
+    setPreviewFile(file);
+  };
+
+  const closePreview = () => {
+    setOpenPreviewState(false);
+    setPreviewFile(null);
+  };
+
+  const renderPreview = (file) => {
+    console.log(file.format)
+    switch (file.format) {
+      case 'PDF':
+        return <embed src={file.content} type="application/pdf" width="100%" height="600px" />;
+      case 'PNG':
+      case 'JPEG':
+        return <img src={file.content} alt={file.name} style={{ maxWidth: '100%', maxHeight: '600px' }} />;
+      case 'DOCX':
+        // Traitez le format DOCX ici
+        return <div>Prévisualisation du format DOCX</div>;
+      default:
+        return <div>Prévisualisation non prise en charge</div>;
+    }
+  };
+
   
   return (
     <div>
       { /* always null, use the first file to modified for now */ }
       {console.log('fte = ' + fileToEdit)}
       {openEdit && <EditDoc emailPatient={emailPatient} file={files[0]} /*file={fileToEdit}*/ folders={folders} />}
+      {openPreviewState && (
+        <div style={modalStyles.modal}>
+          <div style={modalStyles.modalContent}>
+            {renderPreview(previewFile)}
+            <Button
+              variant="contained"
+              onClick={closePreview}
+              style={modalStyles.closeButton}
+            >
+              Fermer la prévisualisation
+            </Button>
+          </div>
+        </div>
+      )}
       <TableContainer>
         <Table>
           <TableHead>
@@ -159,12 +235,12 @@ const FileList = ({ emailPatient, documents, folderName, folders }) => {
                   />
                 </TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleEditFile(file.path)}>
+                  <IconButton onClick={() => handleEditFile(file)}>
                     <EditIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell>
-                  <IconButton onClick={() => openFile(file.path)}>
+                  <IconButton onClick={() => openPreview(file)}>
                     <VisibilityIcon />
                   </IconButton>
                 </TableCell>

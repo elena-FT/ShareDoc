@@ -45,13 +45,13 @@ const useStyles = makeStyles((theme) =>({
   },
 }));
 
-const PatientList = () => {
+const PatientList = ({emailPatient, onPatientClick}) => {
   const [open, setOpen] = React.useState(false);
   const [viewDocs, SetViewDocs] = React.useState(false);
   const [keyDocs, SetKeyDocs] = React.useState('')
   const [patientName, SetPatientName] = React.useState('');
 
-  const {patientBouton, SetPatientBouton} =  useContext(MyContext);
+  // const {patientBouton, SetPatientBouton} =  useContext(MyContext);
 
   const email = useLocation().state.mail;
 
@@ -104,9 +104,10 @@ const PatientList = () => {
     //console.log(patient)
     if(typeof patient != 'undefined') {
       SetKeyDocs(patient.mail)
-      SetPatientBouton(patient.mail)
+      // SetPatientBouton(patient.mail)
       //console.log(patientBouton)
       SetViewDocs(true)
+      onPatientClick(patient.mail)
     }
     else{
       SetViewDocs(false)

@@ -10,8 +10,14 @@ import React, { createContext, useState } from 'react';
 export const MyContext = createContext();
 
 function HomeDoctor() {
-  const [patientBouton, SetPatientBouton] = useState('');
+  const [patientBouton, SetPatientBouton] = useState(null);
 
+  const handlePatientClick = (email) => {
+    // Utilisez l'email du patient comme vous le souhaitez
+    console.log('Email du patient cliqué :', email);
+    SetPatientBouton(email);
+  };
+  
   const classes = useStyles();
 
   const email = useLocation().state.mail
@@ -24,12 +30,9 @@ function HomeDoctor() {
       <div className={classes.home}>
         <div className={classes.left}>
         <ButtonNew emailPatient={patientBouton}/>
-        <MyContext.Provider value={{patientBouton, SetPatientBouton}}>
-          <PatientList emailPatient={email}/>
-        </MyContext.Provider>
+        <PatientList emailPatient={email} onPatientClick={handlePatientClick}/>
         </div>
-          <DocumentsPage emailPatient={email}/>
- 
+        <DocumentsPage emailPatient={patientBouton}/>
       </div>
   );
 }
