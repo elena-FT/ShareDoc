@@ -3,6 +3,7 @@ import DocumentTypes from '../ressources/documentTypes';
 import { Document } from '../class/document';
 import FormatDocument from '../ressources/formatDocument.js';
 import Doctor from '../class/doctor.js'
+import {DoctorBuilder} from './doctor-builder.js'
 
 export class UserFactory {
     static createBasicPatient() {
@@ -16,5 +17,11 @@ export class UserFactory {
           new Document('Document3', 'Radio/Document3', new Date(), DocumentTypes.Radio, FormatDocument.PDF, 'test'),
           new Document('Document4', 'Document4', new Date(), DocumentTypes.Radio, FormatDocument.PDF, 'test')];
         return patient;
+      }
+
+      static createBasicDoctor() {
+        const doctor = DoctorBuilder.buildDoctor('leo','mendoza','01','leo.mendoza@epita.fr','1')
+        doctor.patients = ['michel.bouvier@gmail.com']
+        return doctor
       }
 }

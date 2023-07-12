@@ -1,16 +1,16 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import { BLUE_COLOR, BLUE_DARKEN_COLOR } from '../ressources/constants';
+import {makeStyles} from '@material-ui/core/styles';
+import {BLUE_COLOR, BLUE_DARKEN_COLOR} from '../ressources/constants';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { Document } from '../class/document';
+import {Document} from '../class/document';
 import DocumentTypes from '../ressources/documentTypes';
 import FormatDocument from '../ressources/formatDocument.js';
 
@@ -101,16 +101,17 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
- const uploadFileToDB = (event) => {
-
+ const uploadFileToDB = (event, mail) => {
+    console.log(event)
  const patientData = localStorage.getItem('patient');
 
   if (!patientData) {
     console.log('Aucun patient trouvé');
     
   } else {
-    const patient = JSON.parse(patientData);
-    console.log(patient.firstName);
+    const patients = JSON.parse(patientData);
+    const patient = Object.values(patients).find(patient => patient.mail === mail)
+    console.log(patient)
 
     const file = event.target.files[0]; // Récupérer le fichier sélectionné
     console.log(file);
@@ -138,10 +139,8 @@ const ImageMarked = styled('span')(({ theme }) => ({
       const path = 'IRM/' + file.name;
   
       const newDoc = new Document(file.name, path, new Date(), type, format, fileContent);
-  
-      patient.documents.push(newDoc);
-      const updatedPatientData  = JSON.stringify(patient);
-      localStorage.setItem('patient', updatedPatientData );
+      patient.documents =patient.documents.concat(newDoc);
+      localStorage.setItem('patient',JSON.stringify(patients))
 
       console.log('Le fichier a été ajouté à la base de données.');
     }
@@ -164,7 +163,7 @@ const ButtonNew = ({ emailPatient }) => {
 
   return (
     <div>
-      <input type="file" id="fileInput" style={{ display: 'none' }} onChange={uploadFileToDB} />
+      <input type="file" id="fileInput" style={{ display: 'none' }} onChange={(e)=>uploadFileToDB(e,emailPatient)} />
       <Button variant="contained" color="primary" className={classes.roundedButton} onClick={() => document.getElementById('fileInput').click()}>
         + Nouveau
       </Button>

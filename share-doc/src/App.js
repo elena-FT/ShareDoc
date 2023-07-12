@@ -6,6 +6,9 @@ import { GRAY } from './ressources/constants';
 import {Route, BrowserRouter , Routes} from "react-router-dom";
 import LoginPage from "./login/login-page";
 import SignupPage from "./login/signup-page";
+import {UserFactory} from './factories/user-factory'
+import HomeDoctor from './page-doctor/page-doctor'
+
 
 
 const useStyles = makeStyles({
@@ -24,6 +27,22 @@ function App() {
 
   const patientExists = localStorage.getItem('patient');
 
+
+  /* rajoute un docteur
+    const doctor = localStorage.getItem('doctor')
+    var list = JSON.parse(doctor)
+    list.push(UserFactory.createBasicDoctor())
+    list = JSON.stringify(list);
+    localStorage.setItem('doctor', list) 
+  */
+  /*
+    var tableauJson = localStorage.getItem('doctor');
+    var maListe = JSON.parse(tableauJson);
+    maListe.splice(1, 1);
+    var tableauMajEnJson = JSON.stringify(maListe);
+    localStorage.setItem('doctor', tableauMajEnJson);
+  */
+
   if (!patientExists) {
 
     // Création de nos DB 
@@ -38,6 +57,8 @@ function App() {
     localStorage.setItem('doctor', doctorJSON);
   }
 
+  
+
   return (
     <div className={classes.app}>
       {/* TODO : Créer Header*/}
@@ -46,6 +67,7 @@ function App() {
           <Route path="/" element={<LoginPage/>}></Route>
           <Route path="/signup" element={<SignupPage/>}></Route>
           <Route path="/homepatient" element={<HomePatient/>}></Route>
+          <Route path="/homedoctor" element={<HomeDoctor/>}></Route>
         </Routes>
       </BrowserRouter>
 
